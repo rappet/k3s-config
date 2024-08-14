@@ -1,0 +1,20 @@
+  #cloud-config
+users:
+  - name: rappet
+    groups: users, admin
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDyGxZI3l3PBv+zO6ZxgfP1hiMiQWwNevVtgfuUeBFDI rappet@rappet-framework'
+packages:
+  - unattended-upgrade
+  - apt-listchanges
+package_update: true
+package_upgrade: true
+runcmd:
+  - |
+    curl -sfL https://get.k3s.io | K3S_TOKEN=lol sh -s - server \
+      --cluster-init \
+      --server https://10.0.0.2:6443 \
+      --tls-san=10.0.0.2
+
